@@ -8,4 +8,6 @@ public interface PermitDataAccessPort {
     Mono<Resource> findResourceRequest(Integer resourceId);
 
     Mono<Resource> updateStatus(Resource inputResource);
+
+    Mono<Resource> findById(Integer resourceId);
 }

@@ -4,7 +4,9 @@ public enum ResourceStatusCode {
     REQUESTED(1, "Requested"),
     IN_PROGRESS(2, "In Progress"),
     COMPLETED(3, "Completed"),
-    FAILED(4, "Failed");
+    FAILED(4, "Failed"),
+
+    REJECTED(5, "Rejected");
 
 
     public int code;

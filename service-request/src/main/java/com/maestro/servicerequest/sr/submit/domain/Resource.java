@@ -58,12 +58,12 @@ public class Resource {
      * @param managerId
      * @return
      */
-    public Resource registerManager(String managerId){
+    public Resource registerManagerAndUpdateStatus(String managerId, Integer resourceStatus){
         return Resource.builder()
                 .resourceId(this.resourceId)
                 .resourceName(this.resourceName)
                 .resourceTypeCode(this.resourceTypeCode)
-                .resourceStatus(ResourceStatusCode.IN_PROGRESS.code)
+                .resourceStatus(resourceStatus)
                 .resourceRequestTime(this.resourceRequestTime)
                 .resourceEndTime(this.resourceEndTime)
                 .resourceRequester(this.resourceRequester)

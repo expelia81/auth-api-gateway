@@ -24,4 +24,9 @@ public class PermitDataAccessAdapter implements PermitDataAccessPort {
     public Mono<Resource> updateStatus(Resource resource) {
         return resourceSrRepository.save(resource);
     }
+
+    @Override
+    public Mono<Resource> findById(Integer resourceId) {
+        return resourceSrRepository.findById(resourceId);
+    }
 }
