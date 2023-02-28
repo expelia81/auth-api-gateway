@@ -3,6 +3,7 @@ package com.maestro.servicerequest.sr.permit.adapter.out;
 import com.maestro.servicerequest.sr.permit.application.eventListener.EventListeners;
 import com.maestro.servicerequest.sr.submit.domain.Resource;
 import com.maestro.servicerequest.sr.permit.port.out.PermitExternalApiPort;
+import com.maestro.servicerequest.sr.submit.domain.ResourceStatusCode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,10 +43,10 @@ public class PermitExternalApiAdapter implements PermitExternalApiPort {
                 EventListeners.VALUE++;
                 return inputResource;
             } else if (EventListeners.VALUE == MAX_VALUE) { // 자원 생성이 완료 되었을 때
-                Resource resource = inputResource.resourceCreateComplete();
+                Resource resource = inputResource.updateStatus(ResourceStatusCode.COMPLETED.code);
                 return resource;
             } else { // 피날레가 실패했을 때
-                Resource resource = inputResource.resourceCreateFail();
+                Resource resource = inputResource.updateStatus(ResourceStatusCode.FAILED.code);
                 return resource;
             }
 

@@ -26,8 +26,4 @@ public class SubmitDataAccessAdapter implements SubmitDataAccessPort {
         return Mono.empty();
     }
 
-    @Override
-    public Mono<Resource> updateStatus(Resource resource) {
-        return Mono.fromCallable(() -> resource);
-    }
 }

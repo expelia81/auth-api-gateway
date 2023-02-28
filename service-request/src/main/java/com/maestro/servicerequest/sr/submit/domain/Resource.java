@@ -73,6 +73,21 @@ public class Resource {
                 .resourceCidr(this.resourceCidr)
                 .build();
     }
+    public Resource updateStatus(Integer resourceStatus){
+        return Resource.builder()
+                .resourceId(this.resourceId)
+                .resourceName(this.resourceName)
+                .resourceTypeCode(this.resourceTypeCode)
+                .resourceStatus(resourceStatus)
+                .resourceRequestTime(this.resourceRequestTime)
+                .resourceEndTime(this.resourceEndTime)
+                .resourceRequester(this.resourceRequester)
+                .resourceManager(this.resourceManager)
+                .resourceContent(this.resourceContent)
+                .solutionId(this.solutionId)
+                .resourceCidr(this.resourceCidr)
+                .build();
+    }
 
     public Resource resourceCreateComplete() {
         return Resource.builder()

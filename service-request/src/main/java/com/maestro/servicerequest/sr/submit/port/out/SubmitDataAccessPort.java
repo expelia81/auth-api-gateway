@@ -9,5 +9,4 @@ public interface SubmitDataAccessPort {
 
     Mono<Void> rollbackForRegisterRequest(SubmitUseCase.SRSubmitCommand command);
 
-    Mono<Resource> updateStatus(Resource resource);
 }
