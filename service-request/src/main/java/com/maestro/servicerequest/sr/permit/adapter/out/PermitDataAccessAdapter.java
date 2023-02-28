@@ -21,7 +21,7 @@ public class PermitDataAccessAdapter implements PermitDataAccessPort {
     }
 
     @Override
-    public Mono<Resource> saveProgressResourceRequest(Resource resource) {
+    public Mono<Resource> updateStatus(Resource resource) {
         return resourceSrRepository.save(resource);
     }
 }

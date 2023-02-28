@@ -25,8 +25,18 @@ public class PermitExternalApiAdapter implements PermitExternalApiPort {
              *
              * 진행중이면 faluse
              * 진행중이 아니면 true
+             *
+             *
+             * 성공실패 양쪽 다 테스트하기 위한 로직일 뿐이므로, 신경쓰지말 것
              */
+            log.info("value : " + EventListeners.VALUE);
+            log.info("target value : " + MAX_VALUE);
 
+            if (MAX_VALUE<2){
+                log.info("피날레 실패");
+                Resource resource = inputResource.resourceCreateFail();
+                return resource;
+            }
 
             if (EventListeners.VALUE < MAX_VALUE) {
                 EventListeners.VALUE++;

@@ -26,8 +26,10 @@ public class PermitApplication implements PermitUseCase {
                 .flatMap(resource -> {
                     if (resource.getResourceStatus()==1){
                         Resource managedResource = resource.registerManager(command.managerId());
-                        eventPublisher.publishEvent(resource); // 피날레에 요청 송신 및 요청 상태 확인 후 진행상태 업데이트.
-                        return permitDataAccessPort.saveProgressResourceRequest(resource); // DB에 진행상태 업데이트. (진행중)
+                        log.info("관리자 정보 : " + managedResource.getResourceManager());
+                        log.info("상태 코드 : " + managedResource.getResourceStatus());
+                        eventPublisher.publishEvent(managedResource); // 피날레에 요청 송신 및 요청 상태 확인 후 진행상태 업데이트.
+                        return permitDataAccessPort.updateStatus(managedResource); // DB에 진행상태 업데이트. (진행중)
                     } else { // 진행중이 아닐 때
                         return Mono.error(new NotRequestedService("대기중인 요청이 아닙니다."));
                     }

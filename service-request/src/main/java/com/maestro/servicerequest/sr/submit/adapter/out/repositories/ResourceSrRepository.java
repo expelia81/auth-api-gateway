@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Component
 public interface ResourceSrRepository extends R2dbcRepository<Resource, Integer> {
-//public interface ResourceSrRepository extends R2dbcRepository<ResourceR2dbcEntity, Integer> {
+//public interface ResourceSrPermitRepository extends R2dbcRepository<ResourceR2dbcEntity, Integer> {
 }

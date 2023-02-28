@@ -1,10 +1,7 @@
 package com.maestro.servicerequest.sr.submit.domain;
 
 import com.maestro.servicerequest.sr.submit.port.in.SubmitUseCase;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Table("T_RESOURCE")
 public class Resource {
 
