@@ -1,34 +1,39 @@
 package com.example.authgateway.filters.authcheck.adapter;
 
 import com.example.authgateway.filters.authcheck.port.CacheAccessPort;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
 import java.util.Set;
 
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class CacheAccessAdapter implements CacheAccessPort {
-    @Override
-    public Mono<Set<String>> findAuthorityByCache(String userName) {
-
-        try {
-            log.info("Cache 어댑터 접속 : 캐쉬가 없으므로 Mono.empty()를 반납합니다.");
-        }catch (Throwable throwable){
-            /**
-             * Mono.empty를 던지면 상관없으나, 저쪽에서 exception이나 Mono.error를 던지는 경우를 파악해야함.
-             * 파악이 완료되면 예외처리 필요.
-             */
-            return Mono.empty();
-        }
 
 
-        return Mono.empty();
-    }
+    private final Map<String,Set<String>> cacheMap;
 
     @Override
-    public Mono<Void> registApiSet(Set<String> apis, String userName) {
-        return Mono.empty();
+    public Mono<Set<String>> findAuthorityByCache(String userId) {
+        /*
+         * 레디스 구현 전, 일단 맵으로 대충 구현해둔 단계.
+         */
+
+        return Mono.fromCallable(() -> {
+                    log.info("캐시 확인 중...");
+                    /* 통합 테스트 전에 반드시 삭제해야할 로그 */
+                    Set<String> set = cacheMap.get(userId);
+                    if (set==null || set.isEmpty()){
+                        log.info("캐시를 찾을 수 없음 : 해당 사용자에 대한 캐시가 없습니다.");
+                    } else {
+                        log.info("캐시가 존재하므로, 캐시에서 권한을 조회합니다.");
+                    }
+                    return cacheMap.get(userId);
+                })
+                .flatMap(cachedAuthSet -> cachedAuthSet==null ? Mono.empty() : Mono.just(cacheMap.get(userId)));
     }
 }

@@ -1,14 +1,25 @@
 server:
   port: 11118
+
+
+
 spring:
+  r2dbc:
+    url: r2dbc:pool:mariadb://maestro.okestro.cloud:3306/keycloak
+    username: keycloak
+    password: keycloak
   cloud:
     gateway:
       routes:
         - id: test_filter
-          uri: https://www.naver.com
+          uri: http://localhost:22228
           predicates:
-            - Path=/test/**
+            - Path=/sr/**
           filters:
             - AuthCheckFilter
-
+#            - RewritePath=/test/(?<seg>.*), /${seg}
+  rsocket:
+    server:
+      transport: tcp
+      port: 11119
 

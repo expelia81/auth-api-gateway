@@ -1,13 +1,13 @@
-package com.example.authgateway;
+package com.maestro.servicerequest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CloudGatewayApplication {
+public class ServiceRequestApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CloudGatewayApplication.class, args);
+        SpringApplication.run(ServiceRequestApplication.class, args);
     }
 
 }

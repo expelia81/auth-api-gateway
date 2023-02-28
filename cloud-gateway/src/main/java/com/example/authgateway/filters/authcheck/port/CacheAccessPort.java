@@ -6,7 +6,6 @@ import java.util.Set;
 
 public interface CacheAccessPort {
 
-    Mono<Set<String>> findAuthorityByCache(String userName);
+    Mono<Set<String>> findAuthorityByCache(String userId);
 
-    Mono<Void> registApiSet(Set<String> apis, String userName);
 }
