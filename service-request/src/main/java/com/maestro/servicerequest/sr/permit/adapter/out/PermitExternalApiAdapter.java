@@ -51,4 +51,9 @@ public class PermitExternalApiAdapter implements PermitExternalApiPort {
 
         });
     }
+
+    @Override
+    public Mono<Resource> registerFinaleResource(Resource inputResource) {
+        return Mono.just(inputResource);
+    }
 }

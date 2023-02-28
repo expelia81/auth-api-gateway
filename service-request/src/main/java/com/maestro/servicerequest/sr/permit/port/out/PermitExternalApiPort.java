@@ -8,4 +8,5 @@ public interface PermitExternalApiPort {
 
     Mono<Resource> checkStatus(Resource inputResource);
 
+    Mono<Resource> registerFinaleResource(Resource inputResource);
 }

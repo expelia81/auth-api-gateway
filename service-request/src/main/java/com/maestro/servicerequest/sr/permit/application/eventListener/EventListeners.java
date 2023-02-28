@@ -10,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import com.maestro.servicerequest.sr.submit.domain.ResourceStatusCode;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -27,10 +29,21 @@ public class EventListeners {
 
     @EventListener
     public void submitRequest(Resource inputResource) {
-            VALUE = 0;
-              Flux.interval(Duration.ofSeconds(2))
+
+            Disposable disposable = Mono.fromCallable(() -> permitExternalApiPort.registerFinaleResource(inputResource)).subscribe();
+
+            Flux.interval(Duration.ofSeconds(2))
+                .filter(i -> {
+                    if (disposable.isDisposed()){
+                        log.info("생성 요청되었으므로, 상태 확인 시작됨.");
+                        return true;
+                    } else {
+                        log.info("생성 요청이 완료되지 않았으므로, 상태 확인 시작되지 않음.");
+                        return false;
+                    }
+                })
                 .flatMap(i -> {
-                    // 피날레에 쏘기
+                    // 피날레에 쏘기.  아직 보내는 기능은 없음.
                     log.info("피날레에 " + i + " 번째 쏨.");
                     /* 요청이 완료 / 혹은 실패일 때,  */
                     return permitExternalApiPort.checkStatus(inputResource);
