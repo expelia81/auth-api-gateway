@@ -25,8 +25,10 @@ public class Resource {
     private Integer resourceStatus;  // 리소스 상태
 
     private LocalDateTime resourceRequestTime;  // 리소스 요청 시간
+    
+    private LocalDateTime resourceCreateStartTime;  // 리소스 생성 시작 시간
 
-    private LocalDateTime resourceEndTime;  // 리소스 종료 시간
+    private LocalDateTime resourceCreateEndTime;  // 리소스 생성 종료 시간
 
     private String resourceRequester;  // 리소스 요청자 아이디
 
@@ -56,7 +58,6 @@ public class Resource {
     /**
      * 리소스 관리자 등록, 리소스 상태 변경
      * @param managerId
-     * @return
      */
     public Resource registerManagerAndUpdateStatus(String managerId, Integer resourceStatus){
         return Resource.builder()
@@ -65,7 +66,8 @@ public class Resource {
                 .resourceTypeCode(this.resourceTypeCode)
                 .resourceStatus(resourceStatus)
                 .resourceRequestTime(this.resourceRequestTime)
-                .resourceEndTime(this.resourceEndTime)
+                .resourceCreateStartTime(LocalDateTime.now())
+                .resourceCreateEndTime(this.resourceCreateEndTime)
                 .resourceRequester(this.resourceRequester)
                 .resourceManager(managerId)
                 .resourceContent(this.resourceContent)
@@ -80,7 +82,24 @@ public class Resource {
                 .resourceTypeCode(this.resourceTypeCode)
                 .resourceStatus(resourceStatus)
                 .resourceRequestTime(this.resourceRequestTime)
-                .resourceEndTime(this.resourceEndTime)
+                .resourceCreateStartTime(this.resourceCreateStartTime)
+                .resourceCreateEndTime(this.resourceCreateEndTime)
+                .resourceRequester(this.resourceRequester)
+                .resourceManager(this.resourceManager)
+                .resourceContent(this.resourceContent)
+                .solutionId(this.solutionId)
+                .resourceCidr(this.resourceCidr)
+                .build();
+    }
+    public Resource endResourceCreation(Integer resourceStatus){
+        return Resource.builder()
+                .resourceId(this.resourceId)
+                .resourceName(this.resourceName)
+                .resourceTypeCode(this.resourceTypeCode)
+                .resourceStatus(resourceStatus)
+                .resourceRequestTime(this.resourceRequestTime)
+                .resourceCreateStartTime(this.resourceCreateStartTime)
+                .resourceCreateEndTime(LocalDateTime.now())
                 .resourceRequester(this.resourceRequester)
                 .resourceManager(this.resourceManager)
                 .resourceContent(this.resourceContent)
@@ -89,35 +108,4 @@ public class Resource {
                 .build();
     }
 
-    public Resource resourceCreateComplete() {
-        return Resource.builder()
-                .resourceId(this.resourceId)
-                .resourceName(this.resourceName)
-                .resourceTypeCode(this.resourceTypeCode)
-                .resourceStatus(ResourceStatusCode.COMPLETED.code)
-                .resourceRequestTime(this.resourceRequestTime)
-                .resourceEndTime(this.resourceEndTime)
-                .resourceRequester(this.resourceRequester)
-                .resourceManager(this.resourceManager)
-                .resourceContent(this.resourceContent)
-                .solutionId(this.solutionId)
-                .resourceCidr(this.resourceCidr)
-                .build();
-    }
-
-    public Resource resourceCreateFail() {
-        return Resource.builder()
-                .resourceId(this.resourceId)
-                .resourceName(this.resourceName)
-                .resourceTypeCode(this.resourceTypeCode)
-                .resourceStatus(ResourceStatusCode.FAILED.code)
-                .resourceRequestTime(this.resourceRequestTime)
-                .resourceEndTime(this.resourceEndTime)
-                .resourceRequester(this.resourceRequester)
-                .resourceManager(this.resourceManager)
-                .resourceContent(this.resourceContent)
-                .solutionId(this.solutionId)
-                .resourceCidr(this.resourceCidr)
-                .build();
-    }
 }

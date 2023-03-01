@@ -1,6 +1,6 @@
 package com.maestro.servicerequest.sr.permit.application;
 
-import com.maestro.servicerequest.sr.exceptions.NotRequestedService;
+import com.maestro.servicerequest.sr.exceptions.AlreadyProcessedResourceRequestException;
 import com.maestro.servicerequest.sr.permit.port.in.PermitUseCase;
 import com.maestro.servicerequest.sr.permit.port.out.PermitDataAccessPort;
 import com.maestro.servicerequest.sr.submit.domain.Resource;
@@ -25,14 +25,17 @@ public class PermitApplication implements PermitUseCase {
 
         return permitDataAccessPort.findResourceRequest(command.resourceId())
                 .flatMap(resource -> {
-                    if (resource.getResourceStatus()==1){
+                    if (resource.getResourceStatus()!=ResourceStatusCode.IN_PROGRESS.code &&  // 진행중이거나, 거절되었거나, 완료되면 요청을 받아선 안된다.
+                            resource.getResourceStatus()!=ResourceStatusCode.REJECTED.code &&
+                            resource.getResourceStatus()!=ResourceStatusCode.COMPLETED.code){
                         Resource managedResource = resource.registerManagerAndUpdateStatus(command.managerId(), ResourceStatusCode.IN_PROGRESS.code);
                         log.info("관리자 정보 : " + managedResource.getResourceManager());
                         log.info("상태 코드 : " + managedResource.getResourceStatus());
                         eventPublisher.publishEvent(managedResource); // 피날레에 요청 송신 및 요청 상태 확인 후 진행상태 업데이트.
                         return permitDataAccessPort.updateStatus(managedResource); // DB에 진행상태 업데이트. (진행중)
                     } else { // 진행중이 아닐 때
-                        return Mono.error(new NotRequestedService("대기중인 요청이 아닙니다."));
+                        log.error(resource.getResourceName() + " : 대기중인 요청이 아닙니다.");
+                        return Mono.error(new AlreadyProcessedResourceRequestException( resource.getResourceName() + " : 대기중인 요청이 아닙니다."));
                     }
                 });
     }
@@ -45,7 +48,8 @@ public class PermitApplication implements PermitUseCase {
                         Resource rejectedResource = resource.registerManagerAndUpdateStatus(command.managerId(), ResourceStatusCode.REJECTED.code);
                         return permitDataAccessPort.updateStatus(rejectedResource);
                     } else {
-                        return Mono.error(new NotRequestedService("대기중인 요청이 아닙니다."));
+                        log.error(resource.getResourceName() + " : 대기중인 요청이 아닙니다.");
+                        return Mono.error(new AlreadyProcessedResourceRequestException("대기중인 요청이 아닙니다."));
                     }
                 }).onErrorResume(e -> {
                     log.error("에러명칭 : " + e.getClass().getSimpleName());
