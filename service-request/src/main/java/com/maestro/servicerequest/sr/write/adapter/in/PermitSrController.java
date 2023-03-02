@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/sr")
+@RequestMapping("/sr/admin")
 @RestControllerAdvice
 public class PermitSrController {
     private final PermitUseCase permitUseCase;

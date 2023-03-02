@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/sr")
+@RequestMapping("/sr/user")
 public class SubmitSrController {
 
     private final SubmitUseCase submitUseCase;
